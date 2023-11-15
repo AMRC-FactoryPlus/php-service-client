@@ -1,0 +1,24 @@
+{
+    "name": "amrc-factoryplus/utilities",
+    "description": "This is a PHP package for writing clients for Factory+",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "AMRCFactoryPlus\\Utilities\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Alex Godbehere",
+            "email": "alex.godbehere@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "league/uri": "^6.0",
+        "league/uri-components": "^2.4",
+        "guzzlehttp/guzzle": "^7.4"
+
+    }
+}
