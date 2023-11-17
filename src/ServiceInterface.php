@@ -4,9 +4,7 @@
  *  Copyright 2023 AMRC
  */
 
-namespace AMRCFactoryPlus\Utilities\ServiceClient;
-
-use AMRCFactoryPlus\Utilities\ServiceClient;
+namespace AMRCFactoryPlus;
 
 abstract class ServiceInterface
 {
@@ -28,8 +26,6 @@ abstract class ServiceInterface
     public function fetch(...$args): mixed
     {
         // This is a wrapper for ServiceClient::fetch() that sets the service name when called on the service's class.
-        return $this->client
-            ->getHTTP()
-            ->fetch(...$args, service: static::$serviceName);
+        return $this->client->getHTTP()->fetch(...$args, service: static::$serviceName);
     }
 }

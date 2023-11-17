@@ -1,11 +1,11 @@
 {
-    "name": "amrc-factoryplus/utilities",
+    "name": "amrc-factoryplus/service-client",
     "description": "This is a PHP package for writing clients for Factory+",
     "type": "library",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "AMRCFactoryPlus\\Utilities\\": "src/"
+            "AMRCFactoryPlus\\": "src/"
         }
     },
     "authors": [

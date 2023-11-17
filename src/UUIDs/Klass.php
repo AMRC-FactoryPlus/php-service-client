@@ -4,7 +4,7 @@
  *  Copyright 2023 AMRC
  */
 
-namespace AMRCFactoryPlus\Utilities\ServiceClient\UUIDs;
+namespace AMRCFactoryPlus\UUIDs;
 
 class Klass
 {

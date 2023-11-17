@@ -4,8 +4,9 @@
  *  Copyright 2023 AMRC
  */
 
-namespace AMRCFactoryPlus\Utilities\ServiceClient;
+namespace AMRCFactoryPlus;
 
+use AMRCFactoryPlus\Exceptions\ServiceClientException;
 use League\Uri\Uri;
 
 # This class does static discovery (preconfigured) for now. It could be

@@ -4,12 +4,9 @@
  *  Copyright 2023 AMRC
  */
 
-namespace AMRCFactoryPlus\Utilities;
+namespace AMRCFactoryPlus;
 
-use AMRCFactoryPlus\Utilities\ServiceClient\ConfigDB;
-use AMRCFactoryPlus\Utilities\ServiceClient\Discovery;
-use AMRCFactoryPlus\Utilities\ServiceClient\HTTP;
-use AMRCFactoryPlus\Utilities\ServiceClient\ServiceClientException;
+use AMRCFactoryPlus\Exceptions\ServiceClientException;
 use DateTime;
 use Exception;
 use GuzzleHttp\Client;

@@ -4,7 +4,7 @@
  *  Copyright 2023 AMRC
  */
 
-namespace AMRCFactoryPlus\Utilities\ServiceClient;
+namespace AMRCFactoryPlus\Exceptions;
 
 class ServiceClientException extends \Exception
 {

@@ -4,9 +4,10 @@
  *  Copyright 2023 AMRC
  */
 
-namespace AMRCFactoryPlus\Utilities\ServiceClient;
+namespace AMRCFactoryPlus;
 
-use AMRCFactoryPlus\Utilities\ServiceClient;
+use AMRCFactoryPlus\Exceptions\ServiceClientException;
+use AMRCFactoryPlus\Exceptions\UnauthorisedException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
@@ -44,7 +45,6 @@ class HTTP
         }
 
         // Keep trying to make the request while we get an UnauthorisedException
-        $response = null;
         $tries = 0;
         $refresh = false;
         while ($tries < 3) {
@@ -75,7 +75,7 @@ class HTTP
         string $url,
         $payload = null,
         $force = false
-    ) {
+    ): \Psr\Http\Message\ResponseInterface {
         $client = new Client();
         // Get a valid token, either via the cache or by asking for a new one
         $token = $this->client->getToken($service, $force);

@@ -4,9 +4,10 @@
  *  Copyright 2023 AMRC
  */
 
-namespace AMRCFactoryPlus\Utilities\ServiceClient;
+namespace AMRCFactoryPlus;
 
-use AMRCFactoryPlus\Utilities\ServiceClient\UUIDs\App;
+use AMRCFactoryPlus\Exceptions\ServiceClientException;
+use AMRCFactoryPlus\UUIDs\App;
 
 class ConfigDB extends ServiceInterface
 {
@@ -80,41 +81,5 @@ class ConfigDB extends ServiceInterface
                 ), $e->getCode(),
             );
         }
-    }
-
-    public function searchConfig(
-        string $app,
-        array $query,
-        string $class = null,
-        array $results = null
-    ) {
-        $url = is_null($class) ? sprintf("/v1/app/%s/search", $app) : sprintf(
-            "/v1/app/%s/class/%s/search",
-            $app,
-            $class
-        );
-
-        $qs = [];
-        foreach ($query as $k => $v) {
-            $qs[$k] = json_encode($v);
-        }
-        if (!is_null($results)) {
-            foreach ($results as $k => $v) {
-                $qs["@" . $k] = $v;
-            }
-        }
-
-        $res = $this->fetch(type: "get", url: $url, query: $qs);
-        if (!$res->ok()) {
-            $this->client->logger->debug(
-                sprintf(
-                    "ConfigDB search for %s failed: %u",
-                    $app,
-                    $res->status()
-                )
-            );
-            return;
-        }
-        return $res->json();
     }
 }
