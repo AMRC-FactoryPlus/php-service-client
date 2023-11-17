@@ -49,7 +49,7 @@ class ServiceClient
         $ccache->initKeytab($this->principal . '@' . $this->realm, $this->keytabPath);
 
         // If the cache doesn't have a krb_token_<$service>_service then get one
-//        if (!$this->cache->has('krb_token_' . $service . '_service') || $forceRefresh) {
+        if (!$this->cache->has('krb_token_' . $service . '_service') || $forceRefresh) {
             $clientContext = (new \GSSAPIContext);
             $token = null;
 
@@ -60,7 +60,7 @@ class ServiceClient
                 throw new ServiceClientException($e->getMessage());
             }
 
-            $targetService = 'HTTP/'. $service .'.' . $this->baseUrl . '@' . $this->realm;
+            $targetService = 'HTTP/' . $service . '.' . $this->baseUrl . '@' . $this->realm;
 
             $clientContext->initSecContext(
                 $targetService,
@@ -104,6 +104,7 @@ class ServiceClient
                 $returnToken->token,
                 $expiryDateTime
             );
+        }
 
         // Return token
         return $this->cache->get('krb_token_' . $service . '_service');

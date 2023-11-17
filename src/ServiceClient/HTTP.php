@@ -26,7 +26,7 @@ class HTTP
     public function fetch(string $type, string $service, string $url, $payload = null, array $query = null)
     {
         // Validate the request
-        if (!in_array($type, ['get', 'post', 'put'])) {
+        if (!in_array($type, ['get', 'post', 'put', 'delete'])) {
             throw new ServiceClientException('Incorrect method passed to Fetch');
         }
 

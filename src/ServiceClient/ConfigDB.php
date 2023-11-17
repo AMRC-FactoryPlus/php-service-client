@@ -63,6 +63,25 @@ class ConfigDB extends ServiceInterface
         }
     }
 
+    public function deleteConfig(string $app, string $obj)
+    {
+        try {
+            return $this->fetch(
+                type: 'delete',
+                url: sprintf("/v1/app/%s/object/%s", $app, $obj),
+            );
+        } catch (ServiceClientException $e) {
+            throw new ServiceClientException(
+                sprintf(
+                    "Failed to delete ConfigDB entry for %s/%s: %u",
+                    $app,
+                    $obj,
+                    $e->getCode()
+                ), $e->getCode(),
+            );
+        }
+    }
+
     public function searchConfig(
         string $app,
         array $query,
