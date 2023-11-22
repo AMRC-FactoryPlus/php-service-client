@@ -1,0 +1,18 @@
+name: Deploy Release
+
+on:
+  release:
+    types: [ published ]
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: mnavarrocarter/packagist-update@v1.0
+        with:
+          username: "AMRC-FactoryPlus"
+          api_token: ${{ secrets.PACKAGIST_TOKEN }}
+          package_name: amrc-factoryplus/service-client
