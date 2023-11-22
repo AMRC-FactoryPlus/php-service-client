@@ -11,7 +11,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: mnavarrocarter/packagist-update@v1.0
+      - uses: mnavarrocarter/packagist-update@v1.0.0
         with:
           username: "AMRC-FactoryPlus"
           api_token: ${{ secrets.PACKAGIST_TOKEN }}
