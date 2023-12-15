@@ -10,10 +10,13 @@ use AMRCFactoryPlus\Exceptions\ServiceClientException;
 use AMRCFactoryPlus\Exceptions\UnauthorisedException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\ServerException;
+use GuzzleHttp\Psr7\Response;
 use JsonException;
 use League\Uri\QueryString;
 use League\Uri\Uri;
+use Psr\Http\Message\ResponseInterface;
 
 class HTTP
 {
@@ -67,7 +70,7 @@ class HTTP
     /**
      * @throws GuzzleException
      * @throws ServiceClientException
-     * @throws JsonException
+     * @throws JsonException|UnauthorisedException
      */
     public function do(
         string $type,
@@ -75,7 +78,7 @@ class HTTP
         string $url,
         $payload = null,
         $force = false
-    ): \Psr\Http\Message\ResponseInterface {
+    ): ResponseInterface {
         $client = new Client();
         // Get a valid token, either via the cache or by asking for a new one
         $token = $this->client->getToken($service, $force);
@@ -94,7 +97,13 @@ class HTTP
             // a force refresh
             if ($e->getCode() === 401) {
                 throw new UnauthorisedException;
-            } else {
+            }
+            // If we get a 404 then return null
+            else if ($e->getCode() === 404) {
+                // Create a ResponseInterface with a 404 status code and a null body
+                return new Response(404, [], null);
+            }
+            else {
                 // If we have a different error then throw it up the stack
                 throw new ServiceClientException(
                     'Guzzle HTTP request failed (' . $e->getCode() . '): ' . $e->getMessage(), $e->getCode()
