@@ -28,7 +28,7 @@ class ConfigDB extends ServiceInterface
 
         // Add an entry to the General Object Info app if a name is provided.
         if (!is_null($name)) {
-            $this->putConfig(App::Info, $uuid, ["name" => $name]);
+            $this->putConfig(App::Info, $uuid ?? $response['uuid'], ["name" => $name]);
         }
 
         return $response;
