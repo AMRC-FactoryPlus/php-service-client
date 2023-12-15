@@ -30,7 +30,7 @@ class Discovery extends ServiceInterface
             "auth" => $this->client->scheme . '://auth.' . $this->client->baseUrl,
             "cmdesc" => $this->client->scheme . '://cmdesc.' . $this->client->baseUrl,
             "configdb" => $this->client->scheme . '://configdb.' . $this->client->baseUrl,
-            "cluster-manager" => $this->client->scheme . '://clusters.' . $this->client->baseUrl,
+            "clusters" => $this->client->scheme . '://clusters.' . $this->client->baseUrl,
             default => throw new ServiceClientException(
                 sprintf("Unknown service for discovery: %s", $service)
             ),

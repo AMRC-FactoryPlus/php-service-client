@@ -11,12 +11,12 @@ use AMRCFactoryPlus\UUIDs\App;
 
 class ClusterManager extends ServiceInterface
 {
-    static string $serviceName = "cluster-manager";
+    static string $serviceName = "clusters";
 
     public function getBootstrapScript(string $cluster)
     {
         return $this->fetch(
-            type: "get",
+            type: "post",
             url: '/v1/cluster/'. $cluster .'/bootstrap-url',
         );
     }
