@@ -20,6 +20,7 @@ class ServiceClient
     public $logger;
 
     private ConfigDB $configdb;
+    private ClusterManager $clusterManager;
     private Discovery $discovery;
     private HTTP $http;
     public string $baseUrl;
@@ -31,6 +32,7 @@ class ServiceClient
     public function __construct()
     {
         $this->configdb = new ConfigDB($this);
+        $this->clusterManager = new ClusterManager($this);
         $this->discovery = new Discovery($this);
         $this->http = new HTTP($this);
     }
@@ -110,6 +112,11 @@ class ServiceClient
     public function getConfigDB(): ConfigDB
     {
         return $this->configdb;
+    }
+
+    public function getClusterManager(): ClusterManager
+    {
+        return $this->clusterManager;
     }
 
     public function getDiscovery(): Discovery
