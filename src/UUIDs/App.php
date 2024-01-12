@@ -16,4 +16,7 @@ class App
     const EdgeClusterStatus = "747a62c9-1b66-4a2e-8dd9-0b70a91b6b75";
     const EdgeClusterConfiguration = "bdb13634-0b3d-4e38-a065-9d88c12ee78d";
 
+    const HelmChartTemplate = "729fe070-5e67-4bc7-94b5-afd75cb42b03";
+    const ServiceSetup = "5b47881c-b012-4040-945c-eacafca539b2";
+
 }
