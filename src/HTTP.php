@@ -27,8 +27,14 @@ class HTTP
         $this->client = $client;
     }
 
-    public function fetch(string $type, string $service, string $url, $payload = null, array $query = null)
-    {
+    public function fetch(
+        string $type,
+        string $service,
+        string $url,
+        $payload = null,
+        array $query = null,
+        $contentType = null
+    ) {
         // Validate the request
         if (!in_array($type, ['get', 'post', 'put', 'delete'])) {
             throw new ServiceClientException('Incorrect method passed to Fetch');
@@ -53,15 +59,16 @@ class HTTP
         while ($tries < 3) {
             try {
                 return json_decode(
-                    $this->do($type, $service, $url, $payload, $refresh)->getBody()->getContents(),
+                    $this->do($type, $service, $url, $payload, $refresh, contentType: $contentType)->getBody()
+                    ->getContents(),
                     true
                 );
             } catch (UnauthorisedException $e) {
                 $tries++;
                 // Force the next try to get a fresh token
                 $refresh = true;
-                $this->client->logger->debug('UnauthorisedException: ' . $e->getMessage());
-                $this->client->logger->debug('Retrying request (' . $tries . ')');
+                $this->client->logger->debug('UnauthorisedException: '.$e->getMessage());
+                $this->client->logger->debug('Retrying request ('.$tries.')');
             }
         }
         throw new ServiceClientException('Failed to get a valid token after 3 attempts');
@@ -77,12 +84,17 @@ class HTTP
         string $service,
         string $url,
         $payload = null,
-        $force = false
+        $force = false,
+        $contentType = null
     ): ResponseInterface {
         $client = new Client();
         // Get a valid token, either via the cache or by asking for a new one
         $token = $this->client->getToken($service, $force);
-        $headers = ['Authorization' => 'Bearer ' . $token];
+        $headers = ['Authorization' => 'Bearer '.$token];
+
+        if ($contentType) {
+            $headers['Content-Type'] = $contentType;
+        }
 
         $options = [
             'headers' => $headers,
@@ -97,22 +109,22 @@ class HTTP
             // a force refresh
             if ($e->getCode() === 401) {
                 throw new UnauthorisedException;
-            }
-            // If we get a 404 then return null
-            else if ($e->getCode() === 404) {
-                // Create a ResponseInterface with a 404 status code and a null body
-                return new Response(404, [], null);
-            }
+            } // If we get a 404 then return null
             else {
-                // If we have a different error then throw it up the stack
-                throw new ServiceClientException(
-                    'Guzzle HTTP request failed (' . $e->getCode() . '): ' . $e->getMessage(), $e->getCode()
-                );
+                if ($e->getCode() === 404) {
+                    // Create a ResponseInterface with a 404 status code and a null body
+                    return new Response(404, [], null);
+                } else {
+                    // If we have a different error then throw it up the stack
+                    throw new ServiceClientException(
+                        'Guzzle HTTP request failed ('.$e->getCode().'): '.$e->getMessage(), $e->getCode()
+                    );
+                }
             }
         } catch (ServerException $e) {
             // If we fail with a server error then throw it up the stack
             throw new ServiceClientException(
-                'Guzzle HTTP request failed (' . $e->getCode() . '): ' . $e->getMessage(), $e->getCode()
+                'Guzzle HTTP request failed ('.$e->getCode().'): '.$e->getMessage(), $e->getCode()
             );
         }
     }

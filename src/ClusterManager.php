@@ -28,6 +28,7 @@ class ClusterManager extends ServiceInterface
                 type: 'put',
                 url: sprintf("/cluster/%s/secret/%s/%s/%s", $cluster, $namespace, $name, $key),
                 payload: $payload,
+                contentType: 'application/octet-stream'
             );
         } catch (ServiceClientException $e) {
             throw new ServiceClientException(
