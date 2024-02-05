@@ -20,4 +20,26 @@ class ClusterManager extends ServiceInterface
             url: '/v1/cluster/'. $cluster .'/bootstrap-url',
         );
     }
+
+    public function putSecret(string $cluster, string $namespace, string $name, string $key, $payload)
+    {
+        try {
+            return $this->fetch(
+                type: 'put',
+                url: sprintf("/cluster/%s/secret/%s/%s/%s", $cluster, $namespace, $name, $key),
+                payload: $payload,
+            );
+        } catch (ServiceClientException $e) {
+            throw new ServiceClientException(
+                sprintf(
+                    "Failed to put ConfigDB entry for %s/%s/%s/%s: %u",
+                    $cluster,
+                    $namespace,
+                    $name,
+                    $key,
+                    $e->getCode()
+                ), $e->getCode(),
+            );
+        }
+    }
 }
