@@ -98,8 +98,16 @@ class HTTP
 
         $options = [
             'headers' => $headers,
-            'json' => $payload
         ];
+
+        // If the payload is JSON then use the `json` key, otherwise use the `body` key
+        if (!is_null($payload)) {
+            if (is_array($payload)) {
+                $options['json'] = $payload;
+            } else {
+                $options['body'] = $payload;
+            }
+        }
 
         try {
             // Try and make the original request
