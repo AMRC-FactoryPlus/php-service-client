@@ -26,7 +26,7 @@ class ClusterManager extends ServiceInterface
         try {
             return $this->fetch(
                 type: 'put',
-                url: sprintf("/cluster/%s/secret/%s/%s/%s", $cluster, $namespace, $name, $key),
+                url: sprintf("/v1/cluster/%s/secret/%s/%s/%s", $cluster, $namespace, $name, $key),
                 payload: $payload,
                 contentType: 'application/octet-stream'
             );
