@@ -102,7 +102,7 @@ class HTTP
 
         // If the payload is JSON then use the `json` key, otherwise use the `body` key
         if (!is_null($payload)) {
-            if (is_array($payload)) {
+            if (is_object($payload)) {
                 $options['json'] = $payload;
             } else {
                 $options['body'] = $payload;
