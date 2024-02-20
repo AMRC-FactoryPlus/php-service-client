@@ -33,7 +33,8 @@ class HTTP
         string $url,
         $payload = null,
         array $query = null,
-        $contentType = null
+        $contentType = null,
+        $isJson = true
     ) {
         // Validate the request
         if (!in_array($type, ['get', 'post', 'put', 'delete'])) {
@@ -59,7 +60,8 @@ class HTTP
         while ($tries < 3) {
             try {
                 return json_decode(
-                    $this->do($type, $service, $url, $payload, $refresh, contentType: $contentType)->getBody()
+                    $this->do(type: $type, service: $service, url: $url, isJson: $isJson, payload: $payload, force: $refresh, contentType: $contentType)
+                        ->getBody()
                     ->getContents(),
                     true
                 );
@@ -79,13 +81,14 @@ class HTTP
      * @throws ServiceClientException
      * @throws JsonException|UnauthorisedException
      */
-    public function do(
+    private function do(
         string $type,
         string $service,
         string $url,
+        bool $isJson,
         $payload = null,
         $force = false,
-        $contentType = null
+        $contentType = null,
     ): ResponseInterface {
         $client = new Client();
         // Get a valid token, either via the cache or by asking for a new one
@@ -102,7 +105,7 @@ class HTTP
 
         // If the payload is JSON then use the `json` key, otherwise use the `body` key
         if (!is_null($payload)) {
-            if (is_object($payload)) {
+            if ($isJson) {
                 $options['json'] = $payload;
             } else {
                 $options['body'] = $payload;
